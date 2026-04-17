@@ -1,4 +1,4 @@
-// ROUTER produits
+// ROUTER Tâches
 //Chemin : /api/tâches
 
 const express = require("express");
@@ -12,10 +12,10 @@ router.post("/", verifyToken, checkProjectManager, create);
 
 //GET /api/tâches - Récupérer toutes les tâches
 
-router.get("/", getAll);
+router.get("/", verifyToken, getAll);
 
 //GET /api/tâches/:id récupérer une tâche par son ID
 
-router.get("/:id", getByID);
+router.get("/:id", verifyToken, getByID);
 
 module.exports = router;

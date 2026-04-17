@@ -9,6 +9,13 @@ const {
 
 const jwt = require("jsonwebtoken");
 
+// Fonction de validation du mot de passe
+const validatePassword = (password) => {
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+  return passwordRegex.test(password);
+};
+
 const register = async (req, res) => {
   try {
     const { Nom, Prenom, email, Mot_de_passe } = req.body;
@@ -18,6 +25,14 @@ const register = async (req, res) => {
     if (existingUser.length > 0) {
       return res.status(400).json({
         message: "Erreur : Cet Email est déjà utilisé",
+      });
+    }
+
+    // Valider le mot de passe
+    if (!validatePassword(Mot_de_passe)) {
+      return res.status(400).json({
+        message:
+          "Le mot de passe doit contenir entre 8 et 20 caractères, incluant au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
       });
     }
 
@@ -67,7 +82,7 @@ const login = async (req, res) => {
     const isMatch = await comparePassword(Mot_de_passe, user.user_password);
 
     if (!isMatch) {
-      return res.status(401).json({
+      return res.status(41).json({
         message: "Identifiants incorrects",
       });
     }
